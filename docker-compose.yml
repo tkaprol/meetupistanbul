@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress:4.9-php5.6-apache
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+    environment:
+      WORDPRESS_DB_PASSWORD: meetup
+  wpcli:
+    image: wordpress:cli
+    volumes:
+      - .:/var/www/html
+    command: sh -c "sleep 20 && wp core install --path=/var/www/html --url=localhost --title=meetupistanbul --admin_user=meetupistanbul --admin_password=meetupistanbul --admin_email=tolgakaprol@gmail.com"
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: meetup
+  pma:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 81:80
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: meetup
