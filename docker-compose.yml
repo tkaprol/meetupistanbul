@@ -3,14 +3,16 @@ version: '3.1'
 services:
 
   wordpress:
-    image: wordpress:4.9-php5.6-apache
+    image: wordpress:6.3
     restart: always
     ports:
       - 80:80
     volumes:
       - .:/var/www/html
     environment:
+      WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_PASSWORD: meetup
+      WORDPRESS_DB_NAME: dersdbadi
   wpcli:
     image: wordpress:cli
     volumes:
@@ -19,13 +21,16 @@ services:
   mysql:
     image: mysql:5.7
     restart: always
+    volumes:
+      - ./data/:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: meetup
+      MYSQL_DATABASE: dersdbadi
   pma:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - 81:80
+      - 85:80
     environment:
       PMA_HOST: mysql
       PMA_USER: root
